@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Javabrains Course API
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: zguler
+Implementation-Vendor-Id: com.zak.springboot
+Build-Jdk: 1.8.0_161
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/tutorial-proj
+Created-By: Maven Integration for Eclipse
+
