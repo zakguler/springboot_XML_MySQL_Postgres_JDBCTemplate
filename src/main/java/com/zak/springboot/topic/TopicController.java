@@ -16,7 +16,7 @@ public class TopicController {
 	@Autowired
 	private TopicService topicService;
 	
-// http://localhost:8080/topics
+// http://localhost:3000/topics
 	
 	@RequestMapping("/topics")	//<==================================== "GET" request
 	public List<Topic> getAllTopics() {
@@ -24,7 +24,7 @@ public class TopicController {
 	}
 		
 	
-// http://localhost:8080/topics/spring
+// http://localhost:3000/topics/spring
 	
 //	@RequestMapping("/topics/{foo}")
 //	public Topic getTopic(@PathVariable("foo") String id) {		
