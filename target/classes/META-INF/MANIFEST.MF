@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Implementation-Title: Javabrains Course API
+Implementation-Title: Rest DBAccess API
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: zguler
 Implementation-Vendor-Id: com.zak.springboot
