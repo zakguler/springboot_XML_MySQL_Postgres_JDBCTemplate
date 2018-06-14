@@ -12,20 +12,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 public class MultipleDBConfig {
-	@Bean(name = "mysqlDb")
-	@Primary	//<================================================ used for multiple custom datasources
-	@ConfigurationProperties(prefix = "spring.ds-mysql")
-	public DataSource mysqlDataSource() {
-		return DataSourceBuilder.create().build();
-	}
-
-	@Bean(name = "mysqlJdbcTemplate")
-	public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySQL) {
-		return new JdbcTemplate(dsMySQL);
-	}
 	
 	@Bean(name = "postgresDb")
-	@ConfigurationProperties(prefix = "spring.ds-post")
+	@Primary	//<================================================ used for multiple custom datasources
+	@ConfigurationProperties(prefix = "spring.ds-postgres")
 	public DataSource postgresDataSource() {
 		return  DataSourceBuilder.create().build();
 	}
@@ -34,5 +24,17 @@ public class MultipleDBConfig {
 	public JdbcTemplate postgresJdbcTemplate(@Qualifier("postgresDb") 
 											  DataSource dsPostgres) {
 		return new JdbcTemplate(dsPostgres);
+	}
+
+	
+	@Bean(name = "mysqlDb")
+	@ConfigurationProperties(prefix = "spring.ds-mysql")
+	public DataSource mysqlDataSource() {
+		return DataSourceBuilder.create().build();
+	}
+
+	@Bean(name = "mysqlJdbcTemplate")
+	public JdbcTemplate jdbcTemplate(@Qualifier("mysqlDb") DataSource dsMySQL) {
+		return new JdbcTemplate(dsMySQL);
 	}
 }
