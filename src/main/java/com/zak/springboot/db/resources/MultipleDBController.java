@@ -1,4 +1,4 @@
-package com.zak.springboot.doa.controller;
+package com.zak.springboot.db.resources;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +32,19 @@ public class MultipleDBController {
 		return "PostgreSQL Data: " + map.toString();
 	}
 
+//	@RequestMapping(value = "/getMYUser")
+//	public String getMYUser() {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		String query = " select * from usermaster";
+//		try {
+//			map = mysqlTemplate.queryForMap(query);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "MySQL Data: " + map.toString();
+//	}
+
+
 	@RequestMapping(value = "/getMYUser")
 	public String getMYUser() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -43,4 +56,7 @@ public class MultipleDBController {
 		}
 		return "MySQL Data: " + map.toString();
 	}
+
+
+
 }

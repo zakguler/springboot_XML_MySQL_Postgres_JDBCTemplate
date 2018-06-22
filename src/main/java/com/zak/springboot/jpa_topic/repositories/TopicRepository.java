@@ -1,8 +1,8 @@
-package com.zak.springboot.topic.repositories;
+package com.zak.springboot.jpa_topic.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.zak.springboot.topic.models.Topic;
+import com.zak.springboot.jpa_topic.models.Topic;
 
 public interface TopicRepository extends CrudRepository<Topic, String>
 { 

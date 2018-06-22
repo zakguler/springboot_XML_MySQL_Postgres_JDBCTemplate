@@ -1,4 +1,4 @@
-package com.zak.springboot.hello.controller;
+package com.zak.springboot.hello.resources;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ public class HelloController {
 	
 	@GetMapping("/hello")
 	public String sayHi() {
-		return "MultipleDbApplication : Hi from spring boot";
+		return "JDBCTemplate... MultipleDbApplication : Hi from spring boot";
 
 	}
 

@@ -1,4 +1,4 @@
-package com.zak.springboot.doa.config;
+package com.zak.springboot.db.configurations;
 
 import javax.sql.DataSource;
 

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: JDBCTemplateService
+
+server:
+  port: 3000
+
+
+      

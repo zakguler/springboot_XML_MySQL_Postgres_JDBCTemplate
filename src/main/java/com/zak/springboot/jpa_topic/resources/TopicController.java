@@ -1,4 +1,4 @@
-package com.zak.springboot.topic.resources;
+package com.zak.springboot.jpa_topic.resources;
 
 
 
@@ -17,45 +17,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zak.springboot.topic.models.Topic;
-import com.zak.springboot.topic.services.TopicService;
+import com.zak.springboot.jpa_topic.models.Topic;
+import com.zak.springboot.jpa_topic.services.TopicService;
 
 @RestController
-@RequestMapping("/topic")
-public class TopicResource {
+@RequestMapping("/topics")
+public class TopicController {
 
 	@Autowired
 	private TopicService topicService;
 	
 	// http://localhost:5151/topics
 	
-	@GetMapping("/topics")
+	@GetMapping()
 	public List<Topic> getAllTopics() {
 		return topicService.getAllTopics();				
 	}
 		
-	
-	// http://localhost:8080/topics/Javascript
-//	public Topic getTopic(@PathVariable("foo") String id) {		
-	@GetMapping("/topics/{id}")
+	//	public Topic getTopic(@PathVariable("foo") String id) {		
+	@GetMapping("/{id}")
 	public @ResponseBody ResponseEntity<Topic> getTopic(@PathVariable String id) {		
 		return new ResponseEntity<Topic>(topicService.getTopic(id), HttpStatus.OK);
 	}
 
-	@PostMapping("/topics") //<==== "POST" ADD new request
+	@PostMapping() //<==== "POST" ADD new request
 	public ResponseEntity<Object> addTopic(@RequestBody Topic topic) {
 		topicService.addTopic(topic);
 		return new ResponseEntity<Object>("POST Response", HttpStatus.OK);
 	}
 	
 
-//	@RequestMapping(method=RequestMethod.PUT, value="/topics/{id}") //<==== "PUT" update request
-	@PutMapping("/topics/{id}") //<==== "PUT" update request
+	@PutMapping("/{id}") //<==== "PUT" update request
 	public void updateTopic(@RequestBody Topic topic, @PathVariable String id) {
 		topicService.updateTopic(id, topic);
 	}
 	
-	@DeleteMapping("/topics/{id}") //<==== "DELETE" delete request
+	@DeleteMapping("/{id}") //<==== "DELETE" delete request
 	public void deleteTopic(@PathVariable String id) {
 		topicService.deleteTopic(id);
 	}
