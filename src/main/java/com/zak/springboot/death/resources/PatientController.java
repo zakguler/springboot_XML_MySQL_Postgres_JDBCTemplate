@@ -29,7 +29,13 @@ public class PatientController {
 	private String format = "json";			// "json", "xml"
 	
 	
-	// incoming parameter names is based on FHIR naming standard
+	@GetMapping("")	//<============================================================================================= "GET" request
+	public String getDOHPatients() {
+		return "PatientController: Hello from FHIR endpoint.";
+	}
+
+	
+	// incoming parameter names are based on HL7/FHIR naming standard
 	@GetMapping("/Patient")	//<===================================================================================== "GET" request
 	public String getDOHPatients(@RequestParam Optional<String> identifier, 
 								 @RequestParam Optional<String> given, 
@@ -43,38 +49,56 @@ public class PatientController {
 //		System.out.println("[PatientResource] z@RequestParam _format: " + _format.isPresent());
 //		System.out.println("[PatientResource] z@RequestParam _pretty: " + _pretty.isPresent());
 
+		logger.info("z saved 'stateFileNumber' value: " + stateFileNumber);
+		logger.info("z saved 'deceasedFirst' value: " + deceasedFirst);
+		logger.info("z saved 'deceasedLast' value: " + deceasedLast);
+		logger.info("z saved 'format' value: " + format);
+		
 		//-------------------------
 		// gather and build requested parameter object
-		//
+		// 
+		// java: use build best practice
+		RequestedParameters reqParams = buildRequestedParamsObj(identifier, given, family, _format);
+		
+		return patientService.getPatients(reqParams, format);	
+		
+	}
 
+
+	private RequestedParameters buildRequestedParamsObj(Optional<String> identifier, 
+														Optional<String> given,
+														Optional<String> family, 
+														Optional<String> _format) {
+		
 		RequestedParameters reqParams = new RequestedParameters();
 				
 		if (identifier.isPresent()) {
 			logger.info("[PatientResource] z@RequestParam identifier.get(): " + identifier.get());
 			stateFileNumber = identifier.get().trim();
-			if ( stateFileNumber.length() > 0 ) {
-				reqParams.setStateFileNumber(stateFileNumber);
-			}
+			reqParams.setStateFileNumber(stateFileNumber);
 		}
 		else {
 			logger.info("[PatientResource] z@RequestParam identifier.get(): NOT_PRESENT");
 		}
 		
+		
 		if (given.isPresent()) {
 			logger.info("[PatientResource] z@RequestParam given.get():  " + given.get());
 			deceasedFirst = given.get().trim();  
-			if ( deceasedFirst.length() > 0 ) {
-				reqParams.setDeceasedFirst(deceasedFirst);
-			}
+			reqParams.setDeceasedFirst(deceasedFirst);
+		}else {
+			logger.info("[PatientResource] z@RequestParam given.get(): NOT_PRESENT");
 		}
 
+		
 		if (family.isPresent()) {
 			logger.info("[PatientResource] z@RequestParam family.get():  " + family.get());
 			deceasedLast = family.get().trim();  
-			if ( deceasedLast.length() > 0 ) {
-				reqParams.setDeceasedLast(deceasedLast);
-			}
+			reqParams.setDeceasedLast(deceasedLast);
+		}else {
+			logger.info("[PatientResource] z@RequestParam family.get(): NOT_PRESENT");
 		}
+		
 		
 		if (_format.isPresent()) {
 			logger.info("[PatientResource] z@RequestParam format.get():  " + _format.get());
@@ -82,9 +106,7 @@ public class PatientController {
 		}else {
 			format="json";
 		}
-		
-		
-		return patientService.getPatients(reqParams, format);		
+		return reqParams;
 	}
 	
 }
