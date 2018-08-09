@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.zak.springboot</groupId>
-  <artifactId>tutorial-proj</artifactId>
+  <groupId>com.doh</groupId>
+  <artifactId>test-proj</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
   
-  <name>Rest DBAccess API</name>
-  <description>Spring Boot 2.0.1</description>
+  <name>Rest JDBCTemplate API</name>
+  <description>Spring Boot 2.0.2</description>
   
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -80,7 +80,7 @@
 		<dependency>
 		    <groupId>ca.uhn.hapi.fhir</groupId>
 		    <artifactId>hapi-fhir-base</artifactId>
-		    <version>3.4.0</version>
+		    <version>3.3.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/ca.uhn.hapi.fhir/hapi-fhir-structures-dstu3 -->
 		<dependency>

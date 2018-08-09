@@ -1,4 +1,4 @@
-package com.zak.springboot.db.configurations;
+package com.doh.api.db.configurations;
 
 import javax.sql.DataSource;
 

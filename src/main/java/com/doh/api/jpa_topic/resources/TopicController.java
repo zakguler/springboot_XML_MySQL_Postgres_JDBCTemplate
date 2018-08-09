@@ -1,4 +1,4 @@
-package com.zak.springboot.jpa_topic.resources;
+package com.doh.api.jpa_topic.resources;
 
 
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zak.springboot.jpa_topic.models.Topic;
-import com.zak.springboot.jpa_topic.services.TopicService;
+import com.doh.api.jpa_topic.models.Topic;
+import com.doh.api.jpa_topic.services.TopicService;
 
 @RestController
 @RequestMapping("/topics")

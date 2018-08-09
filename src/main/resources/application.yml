@@ -1,9 +1,9 @@
 spring:
   application:
-    name: JDBCTemplateService
+    name: DOH Death Service
 
 server:
-  port: 3000
+  port: 5151
 
 
       

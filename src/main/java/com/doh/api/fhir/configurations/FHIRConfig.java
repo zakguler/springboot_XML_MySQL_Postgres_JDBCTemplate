@@ -1,4 +1,4 @@
-package com.zak.springboot.death.configurations;
+package com.doh.api.fhir.configurations;
 
 import org.springframework.stereotype.Component;
 

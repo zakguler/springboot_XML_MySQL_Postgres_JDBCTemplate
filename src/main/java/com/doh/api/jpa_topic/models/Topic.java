@@ -1,4 +1,4 @@
-package com.zak.springboot.jpa_topic.models;
+package com.doh.api.jpa_topic.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

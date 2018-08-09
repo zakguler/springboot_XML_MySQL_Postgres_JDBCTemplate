@@ -1,4 +1,4 @@
-package com.zak.springboot.db.resources;
+package com.doh.api.db.resources;
 import java.util.HashMap;
 import java.util.Map;
 
