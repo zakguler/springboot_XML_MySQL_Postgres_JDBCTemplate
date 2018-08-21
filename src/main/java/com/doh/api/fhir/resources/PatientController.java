@@ -2,48 +2,79 @@ package com.doh.api.fhir.resources;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hl7.fhir.dstu3.model.OperationOutcome;
+import org.hl7.fhir.dstu3.model.OperationOutcome.IssueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.doh.api.exception_resources.CustomBadRequestException;
+import com.doh.api.exception_resources.CustomNotFoundException;
 import com.doh.api.fhir.RequestedParameters;
+import com.doh.api.fhir.configurations.FHIRConfig;
 import com.doh.api.fhir.services.PatientService;
+
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 
 @RestController
 @RequestMapping("/fhir")
 public class PatientController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	
 	@Autowired
 	private PatientService patientService;
 
+	private List<String> validParamList = Arrays.asList(
+			"identifier"
+			, "given"
+			, "family"
+			, "birthdate"
+			, "_format"
+			, "_pretty");
+	
 	private String format = "json"; // [FHIR:_format][EDEN:N/A] "json", "xml"
 	private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	@GetMapping("/test") // <=============================================================================================
-							// "GET" request
-	public String getDOHPatients() {
+	@GetMapping("/test")
+	public String doTest() {		
+		String state = "";
+		state = "custom";
+		
+		// use CustomNotFoundException 
+		if (state.equalsIgnoreCase("custom")) {
+			throw new CustomNotFoundException("force CustomNotFoundException [/fhir/test]");
+		}
+		
 		return "PatientController: Test Hello from /fhir/test endpoint.";
 	}
+		
 
 	// incoming parameter names are based on HL7/FHIR naming standard
-	@GetMapping("/Patient") // <=====================================================================================
-							// "GET" request
-	public String getDOHPatients(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam Optional<String> identifier, @RequestParam Optional<String> given,
-			@RequestParam Optional<String> family, @RequestParam Optional<String> birthdate,
-			@RequestParam Optional<String> _format) {
-		// @RequestParam Optional<String> _pretty) {
+	@GetMapping("/Patient") // "GET" request
+	public String getDOHPatients(
+				HttpServletRequest request
+			   ,HttpServletResponse response
+			   ,@RequestParam Optional<String> identifier
+			   ,@RequestParam Optional<String> given
+			   ,@RequestParam Optional<String> family
+			   ,@RequestParam Optional<String> birthdate
+			   ,@RequestParam Optional<String> _format) {
+				// @RequestParam Optional<String> _pretty) {
 
 		String uri = request.getScheme() + "://" + // "http" + "://
 				request.getServerName() + // "localhost"
@@ -54,15 +85,33 @@ public class PatientController {
 				request.getQueryString(); // "given=Ruth&_format=json"
 		logger.info("z getRequestURI(): " + uri);
 
+		
 		// -------------------------
-		// validate resource type
-		//
+		// check for invalid parameters
+		List<String> l = Collections.list(request.getParameterNames());
+		l.removeAll(validParamList);
+		if (l.size()>0) {
+			OperationOutcome outcome = new OperationOutcome();	
+			outcome.getText().setStatusAsString("generated");	// !!! this value has to be "generated"
+			outcome.getText().setDivAsString("<div>At least one Unknown search parameter found " + l.toString() + ". Valid value search parameters for this search are: [identifier, given, family, birthdate, _format, _pretty]</div>");
+			outcome.addIssue()
+					.setSeverity(OperationOutcome.IssueSeverity.ERROR)
+					//HttpStatus.BAD_REQUEST
+					.setCode(IssueType.NOTSUPPORTED)
+					.setDiagnostics("At least one Unknown search parameter found " + l.toString() + ". Valid value search parameters for this search are: [identifier, given, family, birthdate, _format, _pretty]");
 
-		if (!request.getRequestURI().contains("Patient")) {
-			logger.info("Unknown resource type ??? '" + request.getRequestURI() + "' - Server knows how to handle the following: [Patient]");
-//			return "Unknown resource type '" + request.getRequestURI() + "' - Server knows how to handle: [Patient]";
+			FhirContext ctx = FHIRConfig.getCtx();			
+			String outFhirString = ""; 
+			if (_format.isPresent() && (_format.get()).equalsIgnoreCase("xml")) {
+					outFhirString = ctx.newXmlParser().setPrettyPrint(true).encodeResourceToString(outcome);	
+			}else {
+				outFhirString = ctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(outcome);
+			}
+
+			throw new CustomBadRequestException(outFhirString);
 		}
-
+		
+		
 		// -------------------------
 		// add all requested parameters into 'build requested parameter' object
 		//
