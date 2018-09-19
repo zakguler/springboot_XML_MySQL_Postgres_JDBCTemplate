@@ -1,6 +1,6 @@
 
-# TEST_DEV_application.properties
-# -----------------------------
+# TUNNEL_LOCAL_application.properties
+# -------------------------------------
 
 # add external logging file
 #logging.path=c:/zak_dev/springboot/logs/dbaccess.log
@@ -20,9 +20,9 @@
 
 # [TEST box][Linux RedHat]
 # non-tunnelling
-spring.datasource.url= jdbc:postgresql://172.23.164.124:5432/postgres
+# spring.datasource.url= jdbc:postgresql://172.23.164.124:5432/postgres
 # tunnelling
-#spring.datasource.url= jdbc:postgresql://local:7774/postgres
+spring.datasource.url= jdbc:postgresql://localhost:7774/postgres
 spring.datasource.username=mpi-db-pg
 spring.datasource.password=NmNkZTVlYTJmZWQ3Y2EyYTRl
 spring.jpa.hibernate.ddl-auto=none
@@ -46,9 +46,9 @@ spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 
 # [TEST box][Linux RedHat]
 # non-tunnelling
-spring.ds-postgres.jdbc-url =jdbc:postgresql://172.23.164.124:5432/postgres
+#spring.ds-postgres.jdbc-url =jdbc:postgresql://172.23.164.124:5432/postgres
 # tunnelling
-#spring.ds-postgres.jdbc-url =jdbc:postgresql://localhost:7774/postgres
+spring.ds-postgres.jdbc-url =jdbc:postgresql://localhost:7774/postgres
 spring.ds-postgres.username =mpi-db-pg
 spring.ds-postgres.password =NmNkZTVlYTJmZWQ3Y2EyYTRl
 
@@ -65,19 +65,30 @@ spring.ds-postgres.driverClassName=org.postgresql.Driver
 #spring.ds-mysql.username = root
 #spring.ds-mysql.password = root
 
-# [TEST box][Linux RedHat][firewall:172.23.163.88:3306]
+# [TEST box][Linux RedHat][firewall:172.16.110.134:3306][hllsecshdbtest]
+spring.ds-mysql.jdbc-url = jdbc:mysql://hllsecshdbtest:3306/mpi
+spring.ds-mysql.username = zguler
+spring.ds-mysql.password = 6wSFgBKQbva2hDJM
 #spring.ds-mysql.jdbc-url = jdbc:mysql://168.180.168.18:3306/eden
-spring.ds-mysql.jdbc-url = jdbc:mysql://172.23.163.88:3306/eden
-spring.ds-mysql.username = DOHMPI_API
-spring.ds-mysql.password = +@?%5(2&<P%:g<pz
+#spring.ds-mysql.jdbc-url = jdbc:mysql://172.23.163.88:3306/eden
+#spring.ds-mysql.username = DOHMPI_API
+#spring.ds-mysql.password = +@?%5(2&<P%:g<pz
 
 # [Common]
 spring.ds-mysql.driverClassName=com.mysql.jdbc.Driver
 
+
+#==============================================================
+# Override default Exception handler
+# used with custom Exception handler 
+spring.mvc.throw-exception-if-no-handler-found=true
+spring.resources.add-mappings=false
+
+#==============================================================
+#==============================================================
 #==============================================================
 
-
-# [to do ???]
+# [TODO ???]
 # actuator component
 #management.server.port: 9191
 # Property 'management.security.enabled' is Deprecated: 

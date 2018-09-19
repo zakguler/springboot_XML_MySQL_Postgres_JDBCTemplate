@@ -3,6 +3,9 @@
 
 -spring boot 2.0.2.RELEASE
 
+-to compile c:\>mvn -B -DskipTests=true clean package
+
+
 -to clone from gitLab: https://git.dts.utah.gov/zguler/springboot_XML_MySQL_Postgres_JDBCTemplate.git
 
 -postman test:
